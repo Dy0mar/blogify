@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'blog'
+    'blog',
+    'users'
 ]
 
 MIDDLEWARE = [
@@ -125,6 +126,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'public')
 STATICFILES_DIRS = (
     os.path.join(STATIC_ROOT, 'static'),
 )
+
+AUTH_USER_MODEL = 'users.User'
 
 try:
     from .local_settings import *  # noqa
