@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 from blog.models import Post
 
@@ -52,3 +52,11 @@ class AllPostListView(PostListView):
 
 
 all_blog_list = AllPostListView.as_view()
+
+
+class PostDetail(LoginRequiredMixin, DetailView):
+    model = Post
+    template_name = 'posts/post_detail.html'
+
+
+post_detail = PostDetail.as_view()

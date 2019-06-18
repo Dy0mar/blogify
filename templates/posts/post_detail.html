@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<div class="mt-1 mb-1">
+		<h2>{{ post.title }}</h2>
+		<div>{{ post.text|safe }}</div>
+	</div>
+	<p class="text-muted">Author {{ post.author }}, created {{ post.created_at|date:'d.m.Y H:i' }}</p>
+	<hr>
+
+{% endblock %}
