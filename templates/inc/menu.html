@@ -1,29 +1,24 @@
 <div>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-info">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div id="navbarNavDropdown" class="navbar-collapse collapse">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">News feed <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">My blog</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Other blogs</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav">
-
-                {% if user.is_authenticated %}
-				<li><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
-			{% else %}
-				<li><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-			{% endif %}
-            </ul>
-        </div>
-    </nav>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-info">
+		<div id="navbarNavDropdown" class="navbar-collapse collapse">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item {% if current_page == 'author_blog_list' %}active{% endif %}">
+					<a class="nav-link" href="{% url 'author-blog-list' %}">My blog</a>
+				</li>
+				<li class="nav-item {% if current_page == 'feeds' %}active{% endif %}">
+					<a class="nav-link" href="#">News feed</a>
+				</li>
+				<li class="nav-item {% if current_page == 'all_blog_list' %}active{% endif %}">
+					<a class="nav-link" href="{% url 'all-blog-list' %}">Other blogs</a>
+				</li>
+			</ul>
+			<ul class="navbar-nav">
+				{% if user.is_authenticated %}
+					<li><a class="nav-link" href="{% url 'logout' %}">Logout ({{ user.username }})</a></li>
+				{% else %}
+					<li><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+				{% endif %}
+			</ul>
+		</div>
+	</nav>
 </div>
