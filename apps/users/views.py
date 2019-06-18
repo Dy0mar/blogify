@@ -21,6 +21,7 @@ class FeedsListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(FeedsListView, self).get_context_data(**kwargs)
         context['current_page'] = 'feeds'
+        context['title'] = 'New feeds'
         return context
 
 

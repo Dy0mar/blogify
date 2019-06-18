@@ -11,7 +11,9 @@
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 
-	<title> {% block title %}{% endblock %} Blogify</title>
+	<title> {% block title %}
+		{% if title %} {{ title }} | {% endif %} {% endblock %} Blogify
+	</title>
 </head>
 <body>
 {% block menu %}

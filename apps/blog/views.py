@@ -37,6 +37,7 @@ class AuthorPostListView(PostListView):
         context = super(AuthorPostListView, self).get_context_data(**kwargs)
         context['current_page'] = 'author_blog_list'
         context['next_link'] = self.get_next_link()
+        context['title'] = 'My blog'
 
         return context
 
@@ -52,6 +53,7 @@ class AllPostListView(PostListView):
         context = super(AllPostListView, self).get_context_data(**kwargs)
         context['current_page'] = 'all_blog_list'
         context['next_link'] = self.get_next_link()
+        context['title'] = 'User Blogs'
         return context
 
 
@@ -61,6 +63,11 @@ all_blog_list = AllPostListView.as_view()
 class PostDetail(LoginRequiredMixin, DetailView):
     model = Post
     template_name = 'posts/post_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(PostDetail, self).get_context_data(**kwargs)
+        context['title'] = self.object.title
+        return context
 
 
 post_detail = PostDetail.as_view()
