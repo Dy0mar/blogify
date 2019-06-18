@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<div class="mt-1 mb-1">
+		{% if object %}
+			{% if form %}
+				<p class="text-muted">Update {{ post.title }}</p>
+			{% else %}
+				<p class="text-muted">Delete {{ post.title }}</p>
+			{% endif %}
+		{% else %}
+			<p class="text-muted">Create new post</p>
+		{% endif %}
+
+		<form action="" method="post">{% csrf_token %}
+		{{ form.as_p }}
+
+			{% if form %}
+				<input type="submit" value="Save" />
+			{% else %}
+				<input type="submit" value="Delete" />
+			{% endif %}
+
+		</form>
+
+	</div>
+{% endblock %}

@@ -15,10 +15,16 @@ Including another URLconf
 """
 from django.conf import settings
 from django.conf.urls import url, include
-from .views import author_blog_list, all_blog_list, post_detail
+from .views import (
+    author_blog_list, all_blog_list, post_detail, create_post, update_post,
+    delete_post,
+)
 
 urlpatterns = [
     url(r'^blogs/$', all_blog_list, name='all-blog-list'),
+    url(r'^post/create/$', create_post, name='create-post'),
+    url(r'^post/update/(?P<pk>\d+)/$', update_post, name='update-post'),
+    url(r'^post/delete/(?P<pk>\d+)/$', delete_post, name='delete-post'),
     url(r'^post/(?P<pk>\d+)/$', post_detail, name='post-detail'),
     url(r'^$', author_blog_list, name='author-blog-list'),
 ]

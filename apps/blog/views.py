@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse
-from django.views.generic import ListView, DetailView
+from django.http import Http404
+from django.shortcuts import redirect
+from django.urls import reverse, reverse_lazy
+from django.views.generic import (
+    ListView, DetailView, CreateView, UpdateView, DeleteView
+)
 
 from blog.models import Post
 
@@ -60,3 +64,43 @@ class PostDetail(LoginRequiredMixin, DetailView):
 
 
 post_detail = PostDetail.as_view()
+
+
+class PostBaseView(LoginRequiredMixin):
+    model = Post
+    template_name = 'posts/post_form.html'
+    fields = ['title', 'text']
+    success_url = reverse_lazy('author-blog-list')
+
+
+class PostCreate(PostBaseView, CreateView):
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.author = self.request.user
+        self.object.save()
+        return redirect(self.get_success_url())
+
+
+create_post = PostCreate.as_view()
+
+
+class PostUpdate(PostBaseView, UpdateView):
+    def get_object(self, queryset=None):
+        obj = super(PostUpdate, self).get_object()
+        if not obj.author == self.request.user:
+            raise Http404
+        return obj
+
+
+update_post = PostUpdate.as_view()
+
+
+class PostDelete(PostBaseView, DeleteView):
+    def get_object(self, queryset=None):
+        obj = super(PostDelete, self).get_object()
+        if not obj.author == self.request.user:
+            raise Http404
+        return obj
+
+
+delete_post = PostDelete.as_view()
