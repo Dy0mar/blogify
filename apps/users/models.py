@@ -12,9 +12,9 @@ class User(AbstractUser):
 
 
 class FollowUp(models.Model):
-    subscriber = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='subscriber_set'
-    )
     follower = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='follower_set'
+    )
+    author = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='author_set'
     )
