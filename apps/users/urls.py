@@ -14,9 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf.urls import url
-from django.contrib.auth import views as auth_views
+
+from users.views import my_follow_up_list, subscribe_to, feeds
 
 urlpatterns = [
-    url('login/', auth_views.LoginView.as_view(), name='login'),
-    url('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    url(r'^subscribe-to/(?P<pk>\d+)/$', subscribe_to, name='subscribe-to'),
+    url(r'^feeds/$', feeds, name='feeds'),
+    url(r'^$', my_follow_up_list, name='my-follow-up-list'),
 ]
