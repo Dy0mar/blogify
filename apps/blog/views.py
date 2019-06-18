@@ -6,7 +6,7 @@ from django.views.generic import ListView
 from blog.models import Post
 
 
-class BlogListView(LoginRequiredMixin, ListView):
+class PostListView(LoginRequiredMixin, ListView):
     model = Post
     paginate_by = 5
     context_object_name = 'post_list'
@@ -19,7 +19,7 @@ class BlogListView(LoginRequiredMixin, ListView):
         return self.model.objects.order_by('-created_at')
 
 
-class AuthorBlogListView(BlogListView):
+class AuthorPostListView(PostListView):
 
     def get_queryset(self):
         return self.model.objects.filter(
@@ -30,25 +30,25 @@ class AuthorBlogListView(BlogListView):
         return reverse('author-blog-list')
 
     def get_context_data(self, **kwargs):
-        context = super(AuthorBlogListView, self).get_context_data(**kwargs)
+        context = super(AuthorPostListView, self).get_context_data(**kwargs)
         context['current_page'] = 'author_blog_list'
         context['next_link'] = self.get_next_link()
 
         return context
 
 
-author_blog_list = AuthorBlogListView.as_view()
+author_blog_list = AuthorPostListView.as_view()
 
 
-class AllBlogListView(BlogListView):
+class AllPostListView(PostListView):
     def get_next_link(self):
         return reverse('all-blog-list')
 
     def get_context_data(self, **kwargs):
-        context = super(AllBlogListView, self).get_context_data(**kwargs)
+        context = super(AllPostListView, self).get_context_data(**kwargs)
         context['current_page'] = 'all_blog_list'
         context['next_link'] = self.get_next_link()
         return context
 
 
-all_blog_list = AllBlogListView.as_view()
+all_blog_list = AllPostListView.as_view()
