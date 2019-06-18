@@ -14,7 +14,11 @@
 				</h2>
 				<p>{{ post.text|safe|truncatewords:50 }}</p>
 			</div>
-			<p class="text-muted">Author {{ post.author }}, created {{ post.created_at|date:'d.m.Y H:i' }}</p>
+			<p class="text-muted">Author {{ post.author }}, created {{ post.created_at|date:'d.m.Y H:i' }}
+			{% if post.author != request.user %}
+				<a href="{% url 'subscribe-to' pk=post.author.pk %}">Subscribe to {{ post.author }}</a>
+			{% endif %}
+			</p>
 			<hr>
 		{% endfor %}
 
