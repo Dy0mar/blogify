@@ -24,7 +24,7 @@ sys.path.append(os.path.join(BASE_DIR, 'apps'))
 SECRET_KEY = '3cg0vl_e9@$k*k7(1t32&$8jg&i!&(@uuvdj+d4cxjtt2!_+ov'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'blog'
 ]
 
 MIDDLEWARE = [
@@ -124,3 +125,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'public')
 STATICFILES_DIRS = (
     os.path.join(STATIC_ROOT, 'static'),
 )
+
+try:
+    from .local_settings import *  # noqa
+except ImportError:
+    pass
