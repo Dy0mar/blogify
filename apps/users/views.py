@@ -18,6 +18,11 @@ class FeedsListView(LoginRequiredMixin, ListView):
             author__author_set__follower=self.request.user
         ).order_by('-created_at')
 
+    def get_context_data(self, **kwargs):
+        context = super(FeedsListView, self).get_context_data(**kwargs)
+        context['current_page'] = 'feeds'
+        return context
+
 
 feeds = FeedsListView.as_view()
 
