@@ -128,6 +128,7 @@ STATICFILES_DIRS = (
 )
 
 AUTH_USER_MODEL = 'users.User'
+LOGOUT_REDIRECT_URL = '/'
 
 try:
     from .local_settings import *  # noqa
