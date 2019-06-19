@@ -7,6 +7,7 @@ from django.dispatch import receiver
 from django.urls import reverse
 from django.conf import settings
 from users.models import User, FollowUp
+from .tasks import mailing
 
 
 class Post(models.Model):
@@ -32,7 +33,6 @@ class Post(models.Model):
 def my_handler(sender, **kwargs):
     created = kwargs.get('created')
     if created:
-        # TODO Move this to celery task
         post = kwargs.get('instance')
         subject = '{} added new post!'.format(post.author)
 
@@ -40,7 +40,9 @@ def my_handler(sender, **kwargs):
         message = '{} added new post!'.format(post.author)
 
         emails = [obj.author.email for obj in post.author.follower_set.all()]
-        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, emails)
+        mailing.apply_async(
+            (subject, message, settings.DEFAULT_FROM_EMAIL, emails)
+        )
 
 
 class Feeds(models.Model):
