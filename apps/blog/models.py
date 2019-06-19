@@ -32,6 +32,7 @@ class Post(models.Model):
 def my_handler(sender, **kwargs):
     created = kwargs.get('created')
     if created:
+        # TODO Move this to celery task
         post = kwargs.get('instance')
         subject = '{} added new post!'.format(post.author)
 
