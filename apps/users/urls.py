@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url
 
-from users.views import my_follow_up_list, subscribe_to, feeds
+from users.views import my_follow_up_list, subscribe_to, feeds, mark_read
 
 urlpatterns = [
     url(r'^subscribe-to/(?P<pk>\d+)/$', subscribe_to, name='subscribe-to'),
+    url(r'^mark-read/(?P<pk>\d+)/$', mark_read, name='mark-read'),
     url(r'^feeds/$', feeds, name='feeds'),
     url(r'^$', my_follow_up_list, name='my-follow-up-list'),
 ]

@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import ListView
 
-from blog.models import Post
+from blog.models import Post, Feeds
 from users.models import FollowUp, User
 
 
@@ -22,6 +22,13 @@ class FeedsListView(LoginRequiredMixin, ListView):
         context = super(FeedsListView, self).get_context_data(**kwargs)
         context['current_page'] = 'feeds'
         context['title'] = 'New feeds'
+
+        qs = Feeds.objects.filter(
+            user=self.request.user, post__in=self.get_queryset()
+        )
+        read_posts = [feed.post.pk for feed in qs]
+        context['read_posts'] = read_posts
+
         return context
 
 
@@ -50,3 +57,9 @@ def subscribe_to(request, pk):
         author=author
     )
     return redirect('my-follow-up-list')
+
+
+def mark_read(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    Feeds.objects.create(post=post, user=request.user, read=True)
+    return redirect('feeds')

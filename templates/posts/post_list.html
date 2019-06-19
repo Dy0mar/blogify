@@ -6,19 +6,30 @@
 	</p>
 	{% if post_list %}
 		{% for post in post_list %}
-			<div class="mt-1 mb-1">
-				<h2>
-					<a href="{% url 'post-detail' pk=post.pk%}">
-						{{ post.title }}
-					</a>
-				</h2>
-				<p>{{ post.text|safe|truncatewords:50 }}</p>
+			<div class="m	t-1 mb-1">
+				<h3><a href="{{ post.get_absolute_url }}"> {{ post.title }} </a></h3>
+				<p class="text-muted small text-lg-right">Author {{ post.author }}, created {{ post.created_at|date:'d.m.Y H:i' }}</p>
+					<div class="text-dark">
+						{{ post.text|safe|truncatewords:50 }}
+						<a href="{{ post.get_absolute_url }}"> Read more </a>
+					</div>
+
+				<span class="text-muted">
+{#				Autor news feed #}
+					{% if current_page == 'feeds' %}
+						{% if post.pk in read_posts %}
+							<p class="small text-info">Readed</p>
+						{% else %}
+							<p><a class="small text-danger" href="{% url 'mark-read' pk=post.pk%}"> Mark as read </a></p>
+						{% endif %}
+					{% else %}
+{#				Other blog news feed #}
+						{% if post.author != request.user %}
+							<p><a href="{% url 'subscribe-to' pk=post.author.pk %}">Subscribe to {{ post.author }}</a></p>
+						{% endif %}
+					{% endif %}
+				</span>
 			</div>
-			<p class="text-muted">Author {{ post.author }}, created {{ post.created_at|date:'d.m.Y H:i' }}
-			{% if post.author != request.user %}
-				<a href="{% url 'subscribe-to' pk=post.author.pk %}">Subscribe to {{ post.author }}</a>
-			{% endif %}
-			</p>
 			<hr>
 		{% endfor %}
 
