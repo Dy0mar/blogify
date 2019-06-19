@@ -39,9 +39,10 @@ def my_handler(sender, **kwargs):
         message = '{} added new post!'.format(post.author)
 
         emails = [obj.author.email for obj in post.author.follower_set.all()]
-        mailing.apply_async(
-            (subject, message, settings.DEFAULT_FROM_EMAIL, emails)
-        )
+        if emails:
+            mailing.apply_async(
+                (subject, message, settings.DEFAULT_FROM_EMAIL, emails)
+            )
 
 
 class Feeds(models.Model):
