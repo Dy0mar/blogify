@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.models import AbstractUser
+from django.core.mail import send_mail
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.urls import reverse
-
-from users.models import User
+from django.conf import settings
+from users.models import User, FollowUp
 
 
 class Post(models.Model):
@@ -23,6 +26,20 @@ class Post(models.Model):
 
     class Meta:
         ordering = ['-id']
+
+
+@receiver(post_save, sender=Post)
+def my_handler(sender, **kwargs):
+    created = kwargs.get('created')
+    if created:
+        post = kwargs.get('instance')
+        subject = '{} added new post!'.format(post.author)
+
+        # TODO: Here need use fromstring from html template.
+        message = '{} added new post!'.format(post.author)
+
+        emails = [obj.author.email for obj in post.author.follower_set.all()]
+        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, emails)
 
 
 class Feeds(models.Model):
