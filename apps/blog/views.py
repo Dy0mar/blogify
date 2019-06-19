@@ -20,15 +20,18 @@ class PostListView(LoginRequiredMixin, ListView):
         raise NotImplemented
 
     def get_queryset(self):
-        return self.model.objects.order_by('-created_at')
+        # TODO: ajax need use for pagination.
+        return self.model.objects.order_by(
+            '-created_at').prefetch_related('author')
 
 
 class AuthorPostListView(PostListView):
 
     def get_queryset(self):
+        # TODO: ajax need use for pagination.
         return self.model.objects.filter(
             author=self.request.user
-        ).order_by('-created_at')
+        ).order_by('-created_at').prefetch_related('author')
 
     def get_next_link(self):
         return reverse('author-blog-list')

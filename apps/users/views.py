@@ -14,9 +14,10 @@ class FeedsListView(LoginRequiredMixin, ListView):
     template_name = 'posts/post_list.html'
 
     def get_queryset(self):
+        # TODO: ajax need use for pagination.
         return self.model.objects.filter(
             author__author_set__follower=self.request.user
-        ).order_by('-created_at')
+        ).order_by('-created_at').prefetch_related('author')
 
     def get_context_data(self, **kwargs):
         context = super(FeedsListView, self).get_context_data(**kwargs)
